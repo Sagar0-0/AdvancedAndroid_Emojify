@@ -99,17 +99,14 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {
         // Called when you request permission to read and write to external storage
-        switch (requestCode) {
-            case REQUEST_STORAGE_PERMISSION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // If you get permission, launch the camera
-                    launchCamera();
-                } else {
-                    // If you do not get permission, show a Toast
-                    Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
-                }
-                break;
+        if (requestCode == REQUEST_STORAGE_PERMISSION) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // If you get permission, launch the camera
+                launchCamera();
+            } else {
+                // If you do not get permission, show a Toast
+                Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -182,9 +179,8 @@ public class MainActivity extends AppCompatActivity {
         mResultsBitmap = BitmapUtils.resamplePic(this, mTempPhotoPath);
         
         // Detect the faces
-        Emojifier.detectFaces(this, mResultsBitmap);
-        // TODO (10): Change the method call from detectFaces() to detectFacesAndOverlayEmoji() and assign the result to mResultsBitmap.
-        
+        mResultsBitmap=Emojifier.detectFacesAndOverlayEmoji(this, mResultsBitmap);
+
         // Set the new bitmap to the ImageView
         mImageView.setImageBitmap(mResultsBitmap);
     }
